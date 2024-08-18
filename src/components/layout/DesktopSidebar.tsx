@@ -1,37 +1,14 @@
 "use client";
-
-import { QuizIcon, BookIcon, DashboardIcon, FileCopyIcon } from "@/lib/icon";
+import { navigationArray } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
 
-const navigationArray = [
-  {
-    link: "/",
-    icon: DashboardIcon,
-    key: 1,
-  },
-  {
-    link: "/book",
-    icon: BookIcon,
-    key: 2,
-  },
-  {
-    link: "/file",
-    icon: FileCopyIcon,
-    key: 3,
-  },
-  {
-    link: "/quiz",
-    icon: QuizIcon,
-    key: 4,
-  },
-];
 const DesktopSidebar = () => {
   const pathname = usePathname();
   return (
-    <div className="bg-white rounded-xl m-4 flex flex-col justify-between items-center p-4" style={{ padding: "auto" }}>
+    <div className="bg-white rounded-xl m-4 hidden  sm:flex sm:flex-col sm:justify-between sm:items-center sm:p-4">
       <div className="flex flex-col gap-6 items-center">
         <div>
           <div className="relative h-[15px] w-[39px]">
