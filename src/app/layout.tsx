@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css";
+import DesktopSidebar from "@/components/layout/DesktopSidebar";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>{children}</body>
+      <body className={`${cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)} grid grid-cols-[7%_93%] bg-bgPrimary`}>
+        <DesktopSidebar />
+        {children}
+      </body>
     </html>
   );
 }
