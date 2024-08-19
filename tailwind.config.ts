@@ -29,8 +29,11 @@ const config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       colors: {
-        bgPrimary: "#F8FAFC",
-        primary: "#6947BF"
+        bgPrimary: "#e5ecf3",
+        bgSecondary: "#D6DFE4",
+        primary: "#6947BF",
+        textGrey: "#7A8196",
+        buttonDisable: "#ADB8C9"
       },
     },
   },
