@@ -5,3 +5,8 @@
 .b{
   border: 1px solid red;
 }
+.single-line-text {
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
