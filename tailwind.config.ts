@@ -33,7 +33,8 @@ const config = {
         bgSecondary: "#D6DFE4",
         primary: "#6947BF",
         textGrey: "#7A8196",
-        buttonDisable: "#ADB8C9"
+        buttonDisable: "#ADB8C9",
+        destructive: "#ffcbd1"
       },
     },
   },

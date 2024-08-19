@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import DesktopSidebar from "@/components/layout/DesktopSidebar";
 import MobileNavbar from "@/components/layout/MobileNavbar";
+import { Toaster } from "@/components/ui/toast/toaster";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
         <DesktopSidebar />
         <MobileNavbar />
         {children}
+        <Toaster />
       </body>
     </html>
   );
