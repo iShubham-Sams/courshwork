@@ -8,8 +8,13 @@ import { useToast } from "../ui/toast/use-toast";
 import { CheckCircledIcon, Cross2Icon, ImageIcon } from "@radix-ui/react-icons";
 import { Progress } from "../ui/progress";
 import useZustStore from "@/zustand/store";
+import useLocalStorage from "@/lib/hooks/useLocalStorage";
+import { useIndexedDB } from "@/lib/hooks/useIndexDb";
+import fileToUint8Array from "@/lib/helperFunction/fileToUintEightArray";
 
 const PdfUploader = () => {
+  const { addItem } = useIndexedDB();
+  const [localStorageValue, getValue, setValue] = useLocalStorage();
   const [courseValue, setCourseValue] = useState<string | undefined>(undefined);
   const [subjectValue, setSubjectValue] = useState<string | undefined>(undefined);
   const [essayTitle, setEssayTitle] = useState<string | undefined>("");
@@ -82,6 +87,29 @@ const PdfUploader = () => {
       }
     };
   }, [file]);
+
+  const evaluatingOnClick = async () => {
+    if (file) {
+      let courseWorkId = new Date().valueOf();
+      let courseDetailObj = {
+        id: courseWorkId,
+        subject: subjectValue,
+        value: courseValue,
+        title: essayTitle,
+      };
+      const fileUni = await fileToUint8Array(file);
+      addItem({ id: courseWorkId, file: fileUni });
+      setValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work", [...(localStorageValue ?? []), courseDetailObj]);
+      setEvaluating(true);
+      setTimeout(() => setEvaluating(false), 5000);
+    } else {
+      toast({
+        title: "Please upload Valid pdf",
+        variant: "destructive",
+        duration: 2000,
+      });
+    }
+  };
   return (
     <div className="sm:px-4 sm:space-y-2 max-w-[45rem]">
       <p className="font-extrabold text-3xl text-wrap">
@@ -178,12 +206,7 @@ const PdfUploader = () => {
             />
           </div>
           <div className="sm:flex sm:justify-center md:justify-start">
-            <Button
-              onClick={() => {
-                setEvaluating(true);
-              }}
-              className="rounded-full w-full sm:w-[50%] disabled:text-white"
-              disabled={!essayTitle || !subjectValue || !courseValue || !file}>
+            <Button onClick={evaluatingOnClick} className="rounded-full w-full sm:w-[50%] disabled:text-white" disabled={!essayTitle || !subjectValue || !courseValue || !file}>
               <StarIcon color={!essayTitle || !subjectValue || !courseValue || !file ? "#808080" : undefined} disableCircle={!essayTitle || !subjectValue || !courseValue || !file ? "#ffffff" : undefined} />
               &nbsp; Evaluate your Score
             </Button>
