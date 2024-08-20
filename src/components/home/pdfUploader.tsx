@@ -5,17 +5,14 @@ import { Input } from "../ui/input";
 import { StarIcon, UploadFileIcon } from "@/lib/icon";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/toast/use-toast";
-import usePDFFile from "@/lib/hooks/useFileMetaData";
 import { CheckCircledIcon, Cross2Icon, ImageIcon } from "@radix-ui/react-icons";
 import { Progress } from "../ui/progress";
-import useZustStore from "@/zustand/store";
 
 const PdfUploader = () => {
-  const pdfEvaluatedData = useZustStore((value) => value.updateEvaluatedPdfData);
   const [courseValue, setCourseValue] = useState<string | undefined>(undefined);
   const [subjectValue, setSubjectValue] = useState<string | undefined>(undefined);
   const [essayTitle, setEssayTitle] = useState<string | undefined>("");
-  const { file, metadata, handleFileChange, setFile, setMetadata } = usePDFFile();
+  const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState(13);
   const [uploadingPdf, setUploadingPdf] = useState(false);
   const { toast } = useToast();
@@ -38,7 +35,7 @@ const PdfUploader = () => {
         duration: 2000,
       });
     }
-    handleFileChange(droppedFiles[0]);
+    setFile(droppedFiles[0]);
     setUploadingPdf(true);
   };
 
@@ -64,7 +61,7 @@ const PdfUploader = () => {
     }
     if (pdfFiles) {
       setUploadingPdf(true);
-      handleFileChange(pdfFiles);
+      setFile(pdfFiles);
     }
   };
   useEffect(() => {
@@ -94,14 +91,13 @@ const PdfUploader = () => {
             <div className="h-[10rem] flex justify-center items-center">
               <Progress value={progress} className="w-[60%]" />
             </div>
-          ) : metadata ? (
+          ) : file ? (
             <div className="h-[10rem] flex justify-center items-center">
               <div className="relative border p-4 max-w-[20rem] rounded-lg  gap-2  flex items-center">
                 <div
                   className="absolute -top-1 -right-2 border rounded-full cursor-pointer"
                   onClick={() => {
                     setFile(null);
-                    setMetadata(null);
                   }}>
                   <Cross2Icon />
                 </div>
@@ -111,7 +107,7 @@ const PdfUploader = () => {
                 <div>
                   <CheckCircledIcon color="green" />
                 </div>
-                <span className="single-line-text">{metadata.name}</span>
+                <span className="single-line-text">{file.name}</span>
               </div>
             </div>
           ) : (
@@ -180,19 +176,7 @@ const PdfUploader = () => {
             />
           </div>
           <div className="sm:flex sm:justify-center md:justify-start">
-            <Button
-              onClick={() => {
-                const evaluatePdfObj = {
-                  title: essayTitle,
-                  subject: subjectValue,
-                  course: courseValue,
-                  file,
-                  metadata,
-                };
-                pdfEvaluatedData(evaluatePdfObj);
-              }}
-              className="rounded-full w-full sm:w-[50%] disabled:text-white"
-              disabled={!essayTitle || !subjectValue || !courseValue || !file}>
+            <Button onClick={() => {}} className="rounded-full w-full sm:w-[50%] disabled:text-white" disabled={!essayTitle || !subjectValue || !courseValue || !file}>
               <StarIcon color={!essayTitle || !subjectValue || !courseValue || !file ? "#808080" : undefined} disableCircle={!essayTitle || !subjectValue || !courseValue || !file ? "#ffffff" : undefined} />
               &nbsp; Evaluate your Score
             </Button>
