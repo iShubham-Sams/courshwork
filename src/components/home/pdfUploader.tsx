@@ -8,8 +8,10 @@ import { useToast } from "../ui/toast/use-toast";
 import usePDFFile from "@/lib/hooks/useFileMetaData";
 import { CheckCircledIcon, Cross2Icon, ImageIcon } from "@radix-ui/react-icons";
 import { Progress } from "../ui/progress";
+import useZustStore from "@/zustand/store";
 
 const PdfUploader = () => {
+  const pdfEvaluatedData = useZustStore((value) => value.updateEvaluatedPdfData);
   const [courseValue, setCourseValue] = useState<string | undefined>(undefined);
   const [subjectValue, setSubjectValue] = useState<string | undefined>(undefined);
   const [essayTitle, setEssayTitle] = useState<string | undefined>("");
@@ -178,7 +180,19 @@ const PdfUploader = () => {
             />
           </div>
           <div className="sm:flex sm:justify-center md:justify-start">
-            <Button className="rounded-full w-full sm:w-[50%] disabled:text-white" disabled={!essayTitle || !subjectValue || !courseValue || !file}>
+            <Button
+              onClick={() => {
+                const evaluatePdfObj = {
+                  title: essayTitle,
+                  subject: subjectValue,
+                  course: courseValue,
+                  file,
+                  metadata,
+                };
+                pdfEvaluatedData(evaluatePdfObj);
+              }}
+              className="rounded-full w-full sm:w-[50%] disabled:text-white"
+              disabled={!essayTitle || !subjectValue || !courseValue || !file}>
               <StarIcon color={!essayTitle || !subjectValue || !courseValue || !file ? "#808080" : undefined} disableCircle={!essayTitle || !subjectValue || !courseValue || !file ? "#ffffff" : undefined} />
               &nbsp; Evaluate your Score
             </Button>

@@ -10,3 +10,16 @@
   overflow: hidden; 
   text-overflow: ellipsis;
 }
+
+/* In your CSS file */
+.thin-scrollbar::-webkit-scrollbar {
+  @apply w-2; /* Adjust the width as needed */
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded; /* Customize the scrollbar color and style */
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  @apply bg-gray-200; /* Customize the scrollbar track color */
+}

@@ -8,7 +8,7 @@ import { Fragment } from "react";
 const DesktopSidebar = () => {
   const pathname = usePathname();
   return (
-    <div className="bg-white rounded-xl m-4 hidden  sm:flex sm:flex-col sm:justify-between sm:items-center sm:p-4">
+    <div className="bg-white  rounded-xl m-4 hidden sm:h-[calc(100vh-32px)]  sm:flex sm:flex-col sm:justify-between sm:items-center sm:p-4 ">
       <div className="flex flex-col gap-6 items-center">
         <div>
           <div className="relative h-[15px] w-[39px]">

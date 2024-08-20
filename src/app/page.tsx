@@ -1,19 +1,12 @@
 "use client";
 import PdfUploader from "@/components/home/pdfUploader";
 import RightBar from "@/components/home/rightBar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { StarIcon, UploadFileIcon } from "@/lib/icon";
-import useBearStore from "@/zustand/store";
 import Image from "next/image";
-import { useShallow } from "zustand/react/shallow";
 
 export default function Home() {
-  const { nuts, honey, bears } = useBearStore(useShallow((state: any) => ({ nuts: state.nuts, honey: state.honey, bears: state.bears })));
   return (
-    <main className="sm:grid sm:grid-cols-[90%_10%] md:grid-cols-[92%_8%] xl:grid-cols-[94%_6%] 2xl:grid-cols-[96%_4%]">
-      <div className="flex justify-center py-[2rem] px-4 xl:p-[6.5rem]">
+    <main className="sm:h-[calc(100vh-32px)] overflow-y-auto thin-scrollbar sm:grid sm:grid-cols-[90%_10%] md:grid-cols-[92%_8%] xl:grid-cols-[94%_6%] 2xl:grid-cols-[96%_4%]">
+      <div className="flex justify-center py-[2rem] px-4 xl:p-[6rem]">
         <PdfUploader />
         <div className="hidden md:block">
           <div className="h-[8rem] w-[14rem] relative ">
@@ -28,3 +21,12 @@ export default function Home() {
     </main>
   );
 }
+
+// const evaluatePdf = useZustStore((val) => val.evaluatedPdfData);
+// console.log(evaluatePdf, "evaluatePdf");
+// <div className="flex justify-center py-[2rem] px-4 xl:p-[6rem]">
+//   <div>
+//     <p>{evaluatePdf.metadata}</p>
+//   </div>
+//   <iframe src={`${evaluatePdf.file}#toolbar=0`} className="thin-scrollbar" width="600" height="500"></iframe>
+// </div>

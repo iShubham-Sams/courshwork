@@ -1,11 +1,26 @@
+import { FileMetadata } from '@/lib/types/share';
 import { create } from 'zustand'
 
 
-const useBearStore = create((set) => ({
-    bears: 4,
-    nuts: 2,
-    honey: 1,
-    increasePopulation: () => set((state: any) => ({ bears: state.bears + 1 })),
-    removeAllBears: () => set({ bears: 0 }),
+type EvaluatedPdf = {
+    title: string;
+    subject: string;
+    course: string;
+    file: File,
+    metadata: FileMetadata,
+}
+type StoreState = {
+    evaluatedPdfData: Record<string, any> | null;
+    updateEvaluatedPdfData: (newData: Record<string, any>) => void;
+}
+
+
+const useZustStore = create<StoreState>((set) => ({
+    evaluatedPdfData: null,
+    updateEvaluatedPdfData: (newData) => set(() => ({
+        evaluatedPdfData: {
+            ...newData
+        }
+    })),
 }))
-export default useBearStore
+export default useZustStore
