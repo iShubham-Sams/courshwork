@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}
-       sm:grid sm:grid-cols-[12%_78%_10%] xl:grid-cols-[7%_86%_7%] bg-bgPrimary`}>
+       sm:grid sm:grid-cols-[12%_78%_10%] md:grid-cols-[12%_81%_7%]  bg-bgPrimary`}>
         <DesktopSidebar />
         <MobileNavbar />
         {children}

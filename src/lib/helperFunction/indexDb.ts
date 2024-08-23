@@ -73,7 +73,6 @@ export const getAllItems = async (): Promise<MyData[]> => {
 export const getItem = async (id: number): Promise<MyData | undefined> => {
     const db = await initDB()
     return new Promise((resolve, reject) => {
-        console.log(db, 'db');
         if (!db) return resolve(undefined);
 
         const transaction = db.transaction(storeName, "readonly");

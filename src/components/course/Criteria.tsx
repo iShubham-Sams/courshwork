@@ -6,7 +6,7 @@ import { ChevronUp } from "lucide-react";
 import { InfoIcon } from "@/lib/icon";
 import { getProgressColorAndType } from "@/lib/helperFunction/getProgressColor";
 
-const Criteria = ({ criteriaValue }: { criteriaValue: string }) => {
+const Criteria = ({ criteriaValue, score }: { criteriaValue: string; score: number }) => {
   const [accordionOpen, setAccordionOpen] = useState<string | "">("");
   return (
     <div>
@@ -17,11 +17,13 @@ const Criteria = ({ criteriaValue }: { criteriaValue: string }) => {
         collapsible
         className="w-full bg-white rounded-2xl px-2">
         <AccordionItem value={criteriaValue}>
-          <AccordionTrigger>
-            <CircularProgress color={getProgressColorAndType(7 * 10).color} progress={7 * 10} text="7/10" fontSize={10} size={50} strokeWidth={6} />
-            <div className="text-start">
-              <p className="text-textGrey text-[12px]">Criteria {criteriaValue}:</p>
-              <p className="text-[16px] font-semibold">Understanding Knowledge Questions</p>
+          <AccordionTrigger className="md:p-1">
+            <div className="flex gap-2">
+              <CircularProgress fontSize={10} size={50} strokeWidth={6} color={getProgressColorAndType(score * 10).color} progress={score * 10} text={`${score}/10`} />
+              <div className="text-start">
+                <p className="text-textGrey text-[12px] md:text-[10px]">Criteria {criteriaValue}:</p>
+                <p className="text-[16px] md:text-[12px] font-semibold">Understanding Knowledge Questions</p>
+              </div>
             </div>
             {accordionOpen !== criteriaValue ? (
               <ChevronDownIcon className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200`} />
