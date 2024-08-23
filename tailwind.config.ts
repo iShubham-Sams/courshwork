@@ -48,7 +48,10 @@ const config = {
         primary: "#6947BF",
         textGrey: "#7A8196",
         buttonDisable: "#ADB8C9",
-        destructive: "#ffcbd1"
+        destructive: "#ffcbd1",
+        good: "#3CC28AB8",
+        warning: "#F9C94E80",
+        bad: "#EB751F"
       },
     },
   },

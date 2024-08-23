@@ -1,8 +1,10 @@
 "use client";
+import Criteria from "@/components/course/Criteria";
 import Remark from "@/components/course/remark";
 import { getItem } from "@/lib/helperFunction/indexDb";
 import useLocalStorage, { LocalStorageValue } from "@/lib/hooks/useLocalStorage";
 import { Collapse, FullScreen, ZoomInIcon, ZoomOut } from "@/lib/icon";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 export default function Page({ params }: { params: { courseId: string } }) {
   const [pdfFile, setPdfFile] = useState<string | null>(null);
@@ -63,8 +65,15 @@ export default function Page({ params }: { params: { courseId: string } }) {
         </div>
         <iframe src={`${pdfFile}#toolbar=0`} className="thin-scrollbar" width="100%" height="500"></iframe>
       </section>
-      <section>
+      <section className="space-y-4">
         <Remark />
+        <Criteria criteriaValue="A" />
+        <Criteria criteriaValue="B" />
+        <Criteria criteriaValue="C" />
+        <div className="bg-white rounded-full flex items-center justify-between p-2 text-primary w-[60%]">
+          <p className="text-[14px] font-bold text-primary">Check detailed Evaluation</p>
+          <ArrowRightIcon />
+        </div>
       </section>
     </div>
   );
