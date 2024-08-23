@@ -9,12 +9,13 @@ import { CheckCircledIcon, Cross2Icon, ImageIcon } from "@radix-ui/react-icons";
 import { Progress } from "../ui/progress";
 import useZustStore from "@/zustand/store";
 import useLocalStorage from "@/lib/hooks/useLocalStorage";
-import { useIndexedDB } from "@/lib/hooks/useIndexDb";
 import fileToUint8Array from "@/lib/helperFunction/fileToUintEightArray";
+import { useRouter } from "next/navigation";
+import { addItem } from "@/lib/helperFunction/indexDb";
 
 const PdfUploader = () => {
-  const { addItem } = useIndexedDB();
-  const [localStorageValue, getValue, setValue] = useLocalStorage();
+  const router = useRouter();
+  const { localStorageValue, setValue } = useLocalStorage();
   const [courseValue, setCourseValue] = useState<string | undefined>(undefined);
   const [subjectValue, setSubjectValue] = useState<string | undefined>(undefined);
   const [essayTitle, setEssayTitle] = useState<string | undefined>("");
@@ -89,19 +90,21 @@ const PdfUploader = () => {
   }, [file]);
 
   const evaluatingOnClick = async () => {
-    if (file) {
+    if (file && subjectValue && courseValue && essayTitle) {
       let courseWorkId = new Date().valueOf();
       let courseDetailObj = {
         id: courseWorkId,
         subject: subjectValue,
         value: courseValue,
         title: essayTitle,
+        pdfFileTitle: file.name,
       };
       const fileUni = await fileToUint8Array(file);
       addItem({ id: courseWorkId, file: fileUni });
       setValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work", [...(localStorageValue ?? []), courseDetailObj]);
       setEvaluating(true);
       setTimeout(() => setEvaluating(false), 5000);
+      router.push(`/course/${courseWorkId}`);
     } else {
       toast({
         title: "Please upload Valid pdf",

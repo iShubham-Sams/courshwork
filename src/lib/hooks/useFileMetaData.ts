@@ -8,7 +8,7 @@ interface UsePDFFileResult {
 }
 
 
-const usePDFFile = (): UsePDFFileResult => {
+const useFileMetaData = (): UsePDFFileResult => {
     const [metadata, setMetadata] = useState<FileMetadata | null>(null);
     const handleFileChange = useCallback(async (selectedFile: File) => {
         if (selectedFile && selectedFile.type === 'application/pdf') {
@@ -27,4 +27,4 @@ const usePDFFile = (): UsePDFFileResult => {
     return { metadata, handleFileChange };
 };
 
-export default usePDFFile;
+export default useFileMetaData;

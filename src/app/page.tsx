@@ -25,12 +25,3 @@ export default function Home() {
     </main>
   );
 }
-
-// const evaluatePdf = useZustStore((val) => val.evaluatedPdfData);
-// console.log(evaluatePdf, "evaluatePdf");
-// <div className="flex justify-center py-[2rem] px-4 xl:p-[6rem]">
-//   <div>
-//     <p>{evaluatePdf.metadata}</p>
-//   </div>
-//   <iframe src={`${evaluatePdf.file}#toolbar=0`} className="thin-scrollbar" width="600" height="500"></iframe>
-// </div>
