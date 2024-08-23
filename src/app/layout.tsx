@@ -5,6 +5,7 @@ import "./globals.css";
 import DesktopSidebar from "@/components/layout/DesktopSidebar";
 import MobileNavbar from "@/components/layout/MobileNavbar";
 import { Toaster } from "@/components/ui/toast/toaster";
+import RightBar from "@/components/home/rightBar";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -25,10 +26,11 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}
-       sm:grid sm:grid-cols-[12%_88%] xl:grid-cols-[7%_93%] bg-bgPrimary`}>
+       sm:grid sm:grid-cols-[12%_78%_10%] xl:grid-cols-[7%_86%_7%] bg-bgPrimary`}>
         <DesktopSidebar />
         <MobileNavbar />
         {children}
+        <RightBar />
         <Toaster />
       </body>
     </html>

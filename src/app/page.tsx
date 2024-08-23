@@ -1,6 +1,5 @@
 "use client";
 import PdfUploader from "@/components/home/pdfUploader";
-import RightBar from "@/components/home/rightBar";
 import LoadingScreen from "@/components/ui/loadingScreen";
 import useZustStore from "@/zustand/store";
 import Image from "next/image";
@@ -21,7 +20,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <RightBar />
     </main>
   );
 }
