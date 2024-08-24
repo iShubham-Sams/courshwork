@@ -1,13 +1,37 @@
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import CircularProgress from "../ui/circularProgress";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronUp } from "lucide-react";
 import { InfoIcon } from "@/lib/icon";
 import { getProgressColorAndType } from "@/lib/helperFunction/getProgressColor";
+import useWindowSize from "@/lib/hooks/useWindowSize";
 
 const Criteria = ({ criteriaValue, score }: { criteriaValue: string; score: number }) => {
   const [accordionOpen, setAccordionOpen] = useState<string | "">("");
+  const [fontSizeSizeStrokeWidth, setFontSizeStrokeWidth] = useState({ font: 12, size: 60, stroke: 6 });
+  const { width: windowWidth } = useWindowSize();
+  const getCircularProgressFontSizeAndSizeAndStorkWidth = (windowWidth: number) => {
+    if (windowWidth > 0 && windowWidth <= 415) {
+      return { font: 12, size: 60, stroke: 6 };
+    } else if (windowWidth > 415 && windowWidth <= 810) {
+      return { font: 12, size: 60, stroke: 6 };
+    } else if (windowWidth > 810 && windowWidth <= 1024) {
+      return { font: 12, size: 60, stroke: 6 };
+    } else if (windowWidth > 1024 && windowWidth <= 1200) {
+      return { font: 12, size: 60, stroke: 6 };
+    } else if (windowWidth > 1200 && windowWidth <= 1440) {
+      return { font: 12, size: 60, stroke: 6 };
+    } else {
+      return { font: 12, size: 50, stroke: 6 };
+    }
+  };
+  useEffect(() => {
+    if (windowWidth) {
+      const res = getCircularProgressFontSizeAndSizeAndStorkWidth(windowWidth);
+      setFontSizeStrokeWidth(res);
+    }
+  }, [windowWidth]);
   return (
     <div>
       <Accordion
@@ -19,7 +43,7 @@ const Criteria = ({ criteriaValue, score }: { criteriaValue: string; score: numb
         <AccordionItem value={criteriaValue}>
           <AccordionTrigger className="md:p-1">
             <div className="flex gap-2">
-              <CircularProgress fontSize={10} size={50} strokeWidth={6} color={getProgressColorAndType(score * 10).color} progress={score * 10} text={`${score}/10`} />
+              <CircularProgress fontSize={fontSizeSizeStrokeWidth.font} size={fontSizeSizeStrokeWidth.size} strokeWidth={fontSizeSizeStrokeWidth.stroke} color={getProgressColorAndType(score * 10).color} progress={score * 10} text={`${score}/10`} />
               <div className="text-start">
                 <p className="text-textGrey text-[12px] md:text-[10px]">Criteria {criteriaValue}:</p>
                 <p className="text-[16px] md:text-[12px] font-semibold">Understanding Knowledge Questions</p>
