@@ -6,8 +6,9 @@ import { getItem } from "@/lib/helperFunction/indexDb";
 import useLocalStorage from "@/lib/hooks/useLocalStorage";
 import { Collapse, FullScreen, ZoomInIcon, ZoomOut } from "@/lib/icon";
 import useZustStore from "@/zustand/store";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
+import Popup from "@/components/ui/Popup";
 export default function Page({ params }: { params: { courseId: string } }) {
   const scoreAndCriteria = useZustStore((val) => val.scoreAndCriteriaValue);
   const [pdfFile, setPdfFile] = useState<string | null>(null);
@@ -16,6 +17,7 @@ export default function Page({ params }: { params: { courseId: string } }) {
   const scoreCriteriaValueSet = useZustStore((val) => val.setScoreAndCriteriaValue);
   const pdfRef = useRef<HTMLIFrameElement>(null);
   const [zoomLevel, setZoomLevel] = useState(100);
+  const [showFullScreen, setShowFullScreen] = useState(false);
 
   useEffect(() => {
     if (params.courseId) {
@@ -63,9 +65,21 @@ export default function Page({ params }: { params: { courseId: string } }) {
       setZoomLevel((prevZoom) => prevZoom - 10);
     }
   };
-
+  console.log(showFullScreen, "showFullScreen");
   return (
     <div className="h-[calc(100vh-32px)] sm:py-[2rem]  md:py-[1rem] overflow-y-auto thin-scrollbar p-4 md:grid gap-4 md:grid-cols-[70%_28%] space-y-4">
+      {showFullScreen && (
+        <Popup>
+          <span
+            className="absolute top-0 z-50 cursor-pointer right-14 border"
+            onClick={() => {
+              setShowFullScreen(false);
+            }}>
+            <Cross2Icon width={20} height={20} color="white" />
+          </span>
+          <iframe src={`${pdfFile}#toolbar=0`} className=" bg-white rounded-b-lg" width="100%" height="100%"></iframe>
+        </Popup>
+      )}
       <span className="sm:hidden">
         <Remark />
       </span>
@@ -86,13 +100,16 @@ export default function Page({ params }: { params: { courseId: string } }) {
                 <ZoomInIcon />
               </span>
             </div>
-            <div className="p-1 bg-white rounded-full cursor-pointer">
+            <div
+              className="p-1 bg-white rounded-full cursor-pointer"
+              onClick={() => {
+                setShowFullScreen(true);
+              }}>
               <FullScreen />
             </div>
             <div
               className="flex items-center p-1 bg-white rounded-full gap-1 cursor-pointer"
               onClick={() => {
-                console.log(zoomLevel);
                 if (zoomLevel <= 45) {
                   setZoomLevel(100);
                 } else {
