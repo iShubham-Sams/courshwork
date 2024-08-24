@@ -7,13 +7,15 @@ import useLocalStorage from "@/lib/hooks/useLocalStorage";
 import { Collapse, FullScreen, ZoomInIcon, ZoomOut } from "@/lib/icon";
 import useZustStore from "@/zustand/store";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 export default function Page({ params }: { params: { courseId: string } }) {
   const scoreAndCriteria = useZustStore((val) => val.scoreAndCriteriaValue);
   const [pdfFile, setPdfFile] = useState<string | null>(null);
   const { getValue, setValue } = useLocalStorage();
   const [pdfMetaData, setPdfMetaData] = useState<Record<string, string> | null>(null);
   const scoreCriteriaValueSet = useZustStore((val) => val.setScoreAndCriteriaValue);
+  const pdfRef = useRef<HTMLIFrameElement>(null);
+  const [zoomLevel, setZoomLevel] = useState(100);
 
   useEffect(() => {
     if (params.courseId) {
@@ -50,6 +52,17 @@ export default function Page({ params }: { params: { courseId: string } }) {
   if (!pdfFile) {
     return <></>;
   }
+  const zoomIn = () => {
+    if (zoomLevel < 200) {
+      setZoomLevel((prevZoom) => prevZoom + 10);
+    }
+  };
+
+  const zoomOut = () => {
+    if (zoomLevel > 10) {
+      setZoomLevel((prevZoom) => prevZoom - 10);
+    }
+  };
 
   return (
     <div className="h-[calc(100vh-32px)] sm:py-[2rem]  md:py-[1rem] overflow-y-auto thin-scrollbar p-4 md:grid gap-4 md:grid-cols-[70%_28%] space-y-4">
@@ -65,11 +78,11 @@ export default function Page({ params }: { params: { courseId: string } }) {
           <div>{pdfMetaData && <p className="text-[10px] bg-white p-1 rounded-full">{pdfMetaData.pdfFileTitle}</p>}</div>
           <div className="flex items-center gap-2">
             <div className="flex items-center">
-              <span className="cursor-pointer">
+              <span className="cursor-pointer" onClick={zoomOut}>
                 <ZoomOut />
               </span>
-              <p className="text-[10px]">60%</p>
-              <span className="cursor-pointer">
+              <p className="text-[10px]">{zoomLevel}%</p>
+              <span className="cursor-pointer" onClick={zoomIn}>
                 <ZoomInIcon />
               </span>
             </div>
@@ -83,7 +96,18 @@ export default function Page({ params }: { params: { courseId: string } }) {
           </div>
         </div>
         <div className="h-[85%] xl:h-[90%]  w-[100%]">
-          <iframe src={`${pdfFile}#toolbar=0`} className=" bg-white rounded-b-lg" width="100%" height="100%"></iframe>
+          <iframe
+            src={`${pdfFile}#toolbar=0`}
+            style={{
+              transform: `scale(${zoomLevel / 100})`,
+              transformOrigin: "0 0",
+              width: `${100 / (zoomLevel / 100)}%`,
+              height: `${100 / (zoomLevel / 100)}%`,
+            }}
+            className=" bg-white rounded-b-lg"
+            width="100%"
+            height="100%"
+            ref={pdfRef}></iframe>
         </div>
       </section>
       <section className="space-y-4 ">
