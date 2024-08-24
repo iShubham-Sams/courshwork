@@ -89,7 +89,16 @@ export default function Page({ params }: { params: { courseId: string } }) {
             <div className="p-1 bg-white rounded-full cursor-pointer">
               <FullScreen />
             </div>
-            <div className="flex items-center p-1 bg-white rounded-full gap-1 cursor-pointer">
+            <div
+              className="flex items-center p-1 bg-white rounded-full gap-1 cursor-pointer"
+              onClick={() => {
+                console.log(zoomLevel);
+                if (zoomLevel <= 45) {
+                  setZoomLevel(100);
+                } else {
+                  setZoomLevel(45);
+                }
+              }}>
               <Collapse />
               <p className="text-[10px]">Collapse</p>
             </div>
