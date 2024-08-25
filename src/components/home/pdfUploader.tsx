@@ -15,7 +15,7 @@ import { addItem } from "@/lib/helperFunction/indexDb";
 
 const PdfUploader = () => {
   const router = useRouter();
-  const { localStorageValue, setValue } = useLocalStorage();
+  const { getValue, setValue } = useLocalStorage();
   const [courseValue, setCourseValue] = useState<string | undefined>(undefined);
   const [subjectValue, setSubjectValue] = useState<string | undefined>(undefined);
   const [essayTitle, setEssayTitle] = useState<string | undefined>("");
@@ -101,10 +101,12 @@ const PdfUploader = () => {
       };
       const fileUni = await fileToUint8Array(file);
       addItem({ id: courseWorkId, file: fileUni });
-      setValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work", [...(localStorageValue ?? []), courseDetailObj]);
+      const oldValue = getValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work");
+      setValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work", [...(oldValue ?? []), courseDetailObj]);
       setEvaluating(true);
-      setTimeout(() => setEvaluating(false), 5000);
-      router.push(`/course/${courseWorkId}`);
+      setTimeout(() => {
+        setEvaluating(false), router.push(`/course/${courseWorkId}`);
+      }, 5000);
     } else {
       toast({
         title: "Please upload Valid pdf",

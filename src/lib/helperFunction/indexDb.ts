@@ -10,7 +10,6 @@ export const initDB = (): Promise<IDBDatabase | null> => {
 
         request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
             const db = request.result;
-            const storeName = "your_store_name"; // Ensure you define `storeName`
 
             if (!db.objectStoreNames.contains(storeName)) {
                 db.createObjectStore(storeName, { keyPath: "id" });
@@ -32,6 +31,8 @@ export const initDB = (): Promise<IDBDatabase | null> => {
 
 export const addItem = async (item: MyData) => {
     const db = await initDB()
+    console.log(db, 'db');
+    console.log(storeName, 'storeName');
     if (!db) return;
 
     const transaction = db.transaction(storeName, "readwrite");

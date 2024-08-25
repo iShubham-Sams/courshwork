@@ -7,7 +7,7 @@ import useLocalStorage from "@/lib/hooks/useLocalStorage";
 import { Collapse, FullScreen, ZoomInIcon, ZoomOut } from "@/lib/icon";
 import useZustStore from "@/zustand/store";
 import { ArrowRightIcon, Cross2Icon } from "@radix-ui/react-icons";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, use, useEffect, useRef, useState } from "react";
 import Popup from "@/components/ui/Popup";
 import { Skeleton } from "@/components/ui/skeleton";
 import Spinner from "@/components/ui/spinner";
@@ -18,7 +18,6 @@ export default function Page({ params }: { params: { courseId: string } }) {
   const { getValue, setValue } = useLocalStorage();
   const [pdfMetaData, setPdfMetaData] = useState<Record<string, string> | null>(null);
   const scoreCriteriaValueSet = useZustStore((val) => val.setScoreAndCriteriaValue);
-  const pdfRef = useRef<HTMLIFrameElement>(null);
   const [zoomLevel, setZoomLevel] = useState(100);
   const [showFullScreen, setShowFullScreen] = useState(false);
   const [wrongId, setWrongId] = useState(false);
@@ -27,7 +26,7 @@ export default function Page({ params }: { params: { courseId: string } }) {
     if (params.courseId) {
       const localStoragePdfData = getValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work");
       const pdfMeta = localStoragePdfData?.filter((d: { id: number }) => d.id == parseInt(params.courseId));
-      if (pdfMeta.length > 0) {
+      if (pdfMeta?.length > 0) {
         const scoreAndCriteriaObj = getValue(params.courseId);
         if (scoreAndCriteriaObj) {
           scoreCriteriaValueSet(scoreAndCriteriaObj);
@@ -58,7 +57,15 @@ export default function Page({ params }: { params: { courseId: string } }) {
       }
     }
   }, [params.courseId, setPdfFile, setWrongId]);
-  console.log(wrongId, "wrongId");
+  const dismissShowFullScreen = (event: KeyboardEvent) => {
+    if (showFullScreen && (event.key === "Escape" || event.keyCode === 27)) {
+      setShowFullScreen(false);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("keydown", dismissShowFullScreen);
+    return () => window.removeEventListener("keydown", dismissShowFullScreen);
+  }, [showFullScreen]);
   if (wrongId) {
     return (
       <div className="flex justify-center items-center">
@@ -84,18 +91,17 @@ export default function Page({ params }: { params: { courseId: string } }) {
       setZoomLevel((prevZoom) => prevZoom - 10);
     }
   };
-  console.log(wrongId, "wrongId");
-  console.log(params);
+
   return (
     <div className="h-[calc(100vh-32px)] sm:py-[2rem]  md:py-[1rem] overflow-y-auto thin-scrollbar p-4 md:grid gap-4 md:grid-cols-[70%_28%] space-y-4">
       {showFullScreen && (
         <Popup>
           <span
-            className="absolute top-0 z-50 cursor-pointer right-14 border"
+            className="absolute top-0 z-50 cursor-pointer right-14 border border-black"
             onClick={() => {
               setShowFullScreen(false);
             }}>
-            <Cross2Icon width={20} height={20} color="white" />
+            <Cross2Icon width={20} height={20} color="black" />
           </span>
           <iframe src={`${pdfFile}#toolbar=0`} className=" bg-white rounded-b-lg" width="100%" height="100%"></iframe>
         </Popup>
@@ -111,8 +117,8 @@ export default function Page({ params }: { params: { courseId: string } }) {
       </div>
       <Suspense fallback={<Skeleton className="w-[100%] h-[30rem] md:h-[100%] rounded-2xl" />}>
         <section className="w-[100%] h-[30rem] md:h-[100%] max-h-[95vh]">
-          <div className="flex justify-between w-[100%] bg-bgSecondary rounded-t-lg p-4">
-            <div>{pdfMetaData && <p className="text-[10px] bg-white p-1 rounded-full">{pdfMetaData.pdfFileTitle}</p>}</div>
+          <div className="flex justify-between w-[100%] bg-bgSecondary rounded-t-lg p-4 ">
+            {pdfMetaData && <p className="text-[10px] bg-white p-1 rounded-full  single-line-text">{pdfMetaData.pdfFileTitle}</p>}
             <div className="flex items-center gap-2">
               <div className="flex items-center">
                 <span className="cursor-pointer" onClick={zoomOut}>
@@ -145,7 +151,18 @@ export default function Page({ params }: { params: { courseId: string } }) {
             </div>
           </div>
           <div className="h-[85%] xl:h-[90%]  w-[100%]">
-            <iframe
+            <embed
+              src={`${pdfFile}#toolbar=0`}
+              style={{
+                transform: `scale(${zoomLevel / 100})`,
+                transformOrigin: "0 0",
+                width: `${100 / (zoomLevel / 100)}%`,
+                height: `${100 / (zoomLevel / 100)}%`,
+              }}
+              className=" bg-white rounded-b-lg"
+              width="100%"
+              height="100%"></embed>
+            {/* <iframe
               src={`${pdfFile}#toolbar=0`}
               style={{
                 transform: `scale(${zoomLevel / 100})`,
@@ -156,7 +173,7 @@ export default function Page({ params }: { params: { courseId: string } }) {
               className=" bg-white rounded-b-lg"
               width="100%"
               height="100%"
-              ref={pdfRef}></iframe>
+              ref={pdfRef}></iframe> */}
           </div>
         </section>
       </Suspense>
