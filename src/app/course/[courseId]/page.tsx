@@ -1,17 +1,17 @@
 "use client";
 import Criteria from "@/components/course/Criteria";
 import Remark from "@/components/course/remark";
-import { evaluateNumber } from "@/lib/helperFunction/evaluateNumber";
 import { getItem } from "@/lib/helperFunction/indexDb";
 import useLocalStorage from "@/lib/hooks/useLocalStorage";
 import { Collapse, FullScreen, ZoomInIcon, ZoomOut } from "@/lib/icon";
 import useZustStore from "@/zustand/store";
 import { ArrowRightIcon, Cross2Icon } from "@radix-ui/react-icons";
-import { Suspense, use, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Popup from "@/components/ui/Popup";
 import { Skeleton } from "@/components/ui/skeleton";
 import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/toast/use-toast";
+import { evaluateCourse } from "@/lib/mockApi/courseEvaluate";
 
 export default function Page({ params }: { params: { courseId: string } }) {
   const scoreAndCriteria = useZustStore((val) => val.scoreAndCriteriaValue);
@@ -39,21 +39,17 @@ export default function Page({ params }: { params: { courseId: string } }) {
             });
           scoreCriteriaValueSet(scoreAndCriteriaObj);
         } else {
-          const overAllScore = evaluateNumber(20).toString();
-          if (parseInt(overAllScore) >= 8) {
-            toast({
-              title: "Congratulation Your score is Good",
-              variant: "default",
-              duration: 2000,
-            });
-          }
-          const criteriaA = evaluateNumber(10).toString();
-          const criteriaB = evaluateNumber(10).toString();
-          const criteriaC = evaluateNumber(10).toString();
-          const timeCreate = new Date();
-          const scrollObj = { overAllScore, criteriaA, criteriaB, criteriaC, timeCreate };
-          scoreCriteriaValueSet(scrollObj);
-          setValue(params.courseId, scrollObj);
+          evaluateCourse().then((value) => {
+            if (parseInt(value.overAllScore) >= 8) {
+              toast({
+                title: "Congratulation Your score is Good",
+                variant: "default",
+                duration: 2000,
+              });
+            }
+            scoreCriteriaValueSet(value);
+            setValue(params.courseId, value);
+          });
         }
         setPdfMetaData(pdfMeta[0]);
         getItem(parseInt(params.courseId))

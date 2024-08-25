@@ -1,7 +1,7 @@
 import { FileMetadata } from '@/lib/types/share';
 import { create } from 'zustand'
 
-type Score = {
+export type Score = {
     overAllScore: string, criteriaA: string, criteriaB: string, criteriaC: string, timeCreate: Date
 }
 
