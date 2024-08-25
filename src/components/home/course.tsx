@@ -1,3 +1,7 @@
+import { deleteItem } from "@/lib/helperFunction/indexDb";
+import useLocalStorage from "@/lib/hooks/useLocalStorage";
+import useMyCourse from "@/lib/hooks/useMyCourse";
+import { DeleteIcon } from "@/lib/icon";
 import Image from "next/image";
 import React from "react";
 type Course = {
@@ -7,10 +11,26 @@ type Course = {
   subject: string;
   title: string;
   value: string;
+  isDeletable?: boolean;
 };
-const Course = ({ data }: { data: Course }) => {
+const Course = ({ data, setMyCourseDataArray, myCourseDataArray }: { data: Course; setMyCourseDataArray?: any; myCourseDataArray: Course[] }) => {
+  const { getValue, setValue, deleteValue } = useLocalStorage();
+  const deleteCourse = async () => {
+    const localStoragePdfData = getValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work");
+    const filterData = localStoragePdfData?.filter((d: { id: number }) => d.id !== data.id);
+    setValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work", filterData);
+    await deleteItem(data.id);
+    deleteValue(data.id.toString());
+    const updateState = myCourseDataArray.filter((val) => val.id !== data.id);
+    setMyCourseDataArray(updateState);
+  };
   return (
-    <div className="lg:max-w-[40rem] xl:max-w-[28rem] rounded-lg md:grid md:grid-cols-[30%_70%]  p-2 space-x-2 bg-[radial-gradient(circle,_#FFFFFF00,_#F4EAD8)] ">
+    <div className="lg:max-w-[40rem]  xl:max-w-[28rem] rounded-lg md:grid md:grid-cols-[30%_70%]  p-2 space-x-2 bg-[radial-gradient(circle,_#FFFFFF00,_#F4EAD8)] relative group">
+      {data.isDeletable ? (
+        <span className="absolute right-1 top-1 cursor-pointer group-hover:block hidden" onClick={deleteCourse}>
+          <DeleteIcon />
+        </span>
+      ) : null}
       <iframe src={`${data.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&page=1&view=FitH`} className="rounded-lg bg-white border-0 hidden md:block" width="100%" height="100%" style={{ border: "none", overflow: "hidden" }}></iframe>
       <div className="space-y-2 ">
         <p className="text-[16px] font-bold two-line-text">{data.title}</p>

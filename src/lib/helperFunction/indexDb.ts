@@ -90,3 +90,24 @@ export const getItem = async (id: number): Promise<MyData | undefined> => {
         };
     });
 };
+
+export const deleteItem = async (id: number): Promise<void> => {
+    const db = await initDB();
+
+    return new Promise((resolve, reject) => {
+        if (!db) return resolve(undefined);
+        const transaction = db.transaction(storeName, "readwrite");
+        const store = transaction.objectStore(storeName);
+        const request = store.delete(id);
+
+        request.onsuccess = () => {
+            console.log(`Item with ID ${id} deleted from the database`);
+            resolve();
+        };
+
+        request.onerror = () => {
+            console.error(`Failed to delete item with ID ${id}:`, request.error);
+            reject(request.error);
+        };
+    });
+};

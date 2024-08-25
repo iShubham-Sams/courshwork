@@ -1,6 +1,3 @@
-import { useState } from "react";
-
-
 function useLocalStorage() {
 
     const getValue = (key: string) => {
@@ -19,8 +16,16 @@ function useLocalStorage() {
             console.error("Error setting localStorage key", key, error);
         }
     };
+    const deleteValue = (key: string) => {
+        try {
+            window.localStorage.removeItem(key);
+            console.log(`Item with key '${key}' removed from localStorage`);
+        } catch (error) {
+            console.error("Error deleting localStorage key", key, error);
+        }
+    };
 
-    return { getValue, setValue } as const;
+    return { getValue, setValue, deleteValue } as const;
 }
 
 export default useLocalStorage;

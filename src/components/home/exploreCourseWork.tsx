@@ -25,7 +25,7 @@ const ExploreCourseWork = () => {
         <TabsContent value="all">
           <div className="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2  gap-2">
             {[1, 2, 3, 4]?.map((val) => {
-              return <Course data={courseDummy} key={courseDummy.id} />;
+              return <Course data={courseDummy} key={val} />;
             })}
           </div>
         </TabsContent>

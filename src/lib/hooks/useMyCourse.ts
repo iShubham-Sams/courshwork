@@ -18,20 +18,24 @@ const useMyCourse = () => {
 
   const getCourse = async () => {
     const localStoragePdfData = (await getValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work")) as LocalStoragePdfData[] | [];
-    const data = localStoragePdfData.map(async (val) => {
-      const data = await getItem(val.id);
-      if (data) {
-        const blob = new Blob([data.file], { type: "application/pdf" });
-        const pdfUrl = URL.createObjectURL(blob);
-        return { ...val, pdfUrl };
-      } else {
-        return { ...val, pdfUrl: null };
-      }
-    });
-    data.map(async (val) => {
-      const da = await val;
-      setMyCourseDataArray((d) => [...(d || []), da]);
-    });
+    if (localStoragePdfData.length > 0) {
+      const data = localStoragePdfData.map(async (val) => {
+        const data = await getItem(val.id);
+        if (data) {
+          const blob = new Blob([data.file], { type: "application/pdf" });
+          const pdfUrl = URL.createObjectURL(blob);
+          return { ...val, pdfUrl, isDeletable: true };
+        } else {
+          return { ...val, pdfUrl: null, isDeletable: true };
+        }
+      });
+      data.map(async (val) => {
+        const da = await val;
+        setMyCourseDataArray((d) => [...(d || []), da]);
+      });
+    } else {
+      setMyCourseDataArray([])
+    }
   };
   useEffect(() => {
     if (!myCourseDataArray) {
@@ -39,6 +43,7 @@ const useMyCourse = () => {
     }
     return () => setMyCourseDataArray(null);
   }, []);
+
   return { myCourseDataArray, setMyCourseDataArray }
 }
 export default useMyCourse
