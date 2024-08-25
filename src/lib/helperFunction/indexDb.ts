@@ -31,8 +31,6 @@ export const initDB = (): Promise<IDBDatabase | null> => {
 
 export const addItem = async (item: MyData) => {
     const db = await initDB()
-    console.log(db, 'db');
-    console.log(storeName, 'storeName');
     if (!db) return;
 
     const transaction = db.transaction(storeName, "readwrite");

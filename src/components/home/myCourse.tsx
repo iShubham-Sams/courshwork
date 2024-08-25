@@ -6,7 +6,6 @@ import { Skeleton } from "../ui/skeleton";
 const MyCourse = () => {
   const [showAll, setShowAll] = useState(2);
   const { myCourseDataArray, setMyCourseDataArray } = useMyCourse();
-  console.log(myCourseDataArray, "myCourseDataArray");
   if (!myCourseDataArray) {
     return <Skeleton className="w-[100%] h-[10rem] md:h-[100%] rounded-2xl" />;
   }
