@@ -11,6 +11,7 @@ import { Suspense, use, useEffect, useRef, useState } from "react";
 import Popup from "@/components/ui/Popup";
 import { Skeleton } from "@/components/ui/skeleton";
 import Spinner from "@/components/ui/spinner";
+import { useToast } from "@/components/ui/toast/use-toast";
 
 export default function Page({ params }: { params: { courseId: string } }) {
   const scoreAndCriteria = useZustStore((val) => val.scoreAndCriteriaValue);
@@ -21,18 +22,31 @@ export default function Page({ params }: { params: { courseId: string } }) {
   const [zoomLevel, setZoomLevel] = useState(100);
   const [showFullScreen, setShowFullScreen] = useState(false);
   const [wrongId, setWrongId] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (params.courseId) {
       const localStoragePdfData = getValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work");
-      console.log(localStoragePdfData, "localStoragePdfData");
       const pdfMeta = localStoragePdfData?.filter((d: { id: number }) => d.id == parseInt(params.courseId));
       if (pdfMeta?.length > 0) {
         const scoreAndCriteriaObj = getValue(params.courseId);
         if (scoreAndCriteriaObj) {
+          if (scoreAndCriteriaObj.overAllScore >= 8)
+            toast({
+              title: "Congratulation Your score is Good",
+              duration: 2000,
+              variant: "good",
+            });
           scoreCriteriaValueSet(scoreAndCriteriaObj);
         } else {
           const overAllScore = evaluateNumber(20).toString();
+          if (parseInt(overAllScore) >= 8) {
+            toast({
+              title: "Congratulation Your score is Good",
+              variant: "default",
+              duration: 2000,
+            });
+          }
           const criteriaA = evaluateNumber(10).toString();
           const criteriaB = evaluateNumber(10).toString();
           const criteriaC = evaluateNumber(10).toString();
