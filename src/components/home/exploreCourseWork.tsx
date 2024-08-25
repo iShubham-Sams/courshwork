@@ -7,15 +7,15 @@ const courseDummy = {
   id: 5666,
   pdfFileTitle: "How does the temperature of a Copper pipe affect the time it takes a magnet to fall thought",
   subject: "English",
-  title: "",
+  title: "How does the temperature of a Copper pipe affect the time it takes a magnet to fall thought",
   value: "Physics HL",
 };
 const ExploreCourseWork = () => {
   return (
-    <div className="space-y-2 ">
+    <div className="space-y-2">
       <p className="text-[14px] text-textGrey">Explore coursework</p>
       <Tabs defaultValue="all">
-        <TabsList>
+        <TabsList className="flex-wrap h-full justify-start gap-2">
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="ai">IA Example</TabsTrigger>
           <TabsTrigger value="ee">EE Example</TabsTrigger>
@@ -23,35 +23,35 @@ const ExploreCourseWork = () => {
           <TabsTrigger value="tok">Tok Example</TabsTrigger>
         </TabsList>
         <TabsContent value="all">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2  gap-2">
             {[1, 2, 3, 4]?.map((val) => {
               return <Course data={courseDummy} key={courseDummy.id} />;
             })}
           </div>
         </TabsContent>
         <TabsContent value="ai">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2  gap-2">
             {[1, 2, 3, 4]?.map((val) => {
               return <Course data={courseDummy} key={courseDummy.id} />;
             })}
           </div>
         </TabsContent>
         <TabsContent value="ee">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2  gap-2">
             {[1, 2, 3, 4]?.map((val) => {
               return <Course data={courseDummy} key={courseDummy.id} />;
             })}
           </div>
         </TabsContent>
         <TabsContent value="io">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2  gap-2">
             {[1, 2, 3, 4]?.map((val) => {
               return <Course data={courseDummy} key={courseDummy.id} />;
             })}
           </div>
         </TabsContent>
         <TabsContent value="tok">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2  gap-2">
             {[1, 2, 3, 4]?.map((val) => {
               return <Course data={courseDummy} key={courseDummy.id} />;
             })}

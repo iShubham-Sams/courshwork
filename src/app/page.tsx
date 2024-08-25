@@ -22,8 +22,10 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <MyCourse />
-      <ExploreCourseWork />
+      <div className=" sm:flex sm:flex-col sm:justify-center  sm:items-center">
+        <MyCourse />
+        <ExploreCourseWork />
+      </div>
     </main>
   );
 }

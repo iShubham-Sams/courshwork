@@ -116,7 +116,7 @@ const PdfUploader = () => {
     }
   };
   return (
-    <div className="sm:px-4 sm:space-y-2 max-w-[45rem]">
+    <div className="sm:px-4 space-y-4 max-w-[45rem]">
       <p className="font-extrabold text-3xl text-wrap">
         Hey IB Folks ! Unsure about the quality of your answers? <span className="text-primary"> We get you.</span>
       </p>
