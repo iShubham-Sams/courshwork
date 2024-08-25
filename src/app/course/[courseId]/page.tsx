@@ -25,6 +25,7 @@ export default function Page({ params }: { params: { courseId: string } }) {
   useEffect(() => {
     if (params.courseId) {
       const localStoragePdfData = getValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work");
+      console.log(localStoragePdfData, "localStoragePdfData");
       const pdfMeta = localStoragePdfData?.filter((d: { id: number }) => d.id == parseInt(params.courseId));
       if (pdfMeta?.length > 0) {
         const scoreAndCriteriaObj = getValue(params.courseId);
