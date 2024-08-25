@@ -163,18 +163,6 @@ export default function Page({ params }: { params: { courseId: string } }) {
               className=" bg-white rounded-b-lg"
               width="100%"
               height="100%"></embed>
-            {/* <iframe
-              src={`${pdfFile}#toolbar=0`}
-              style={{
-                transform: `scale(${zoomLevel / 100})`,
-                transformOrigin: "0 0",
-                width: `${100 / (zoomLevel / 100)}%`,
-                height: `${100 / (zoomLevel / 100)}%`,
-              }}
-              className=" bg-white rounded-b-lg"
-              width="100%"
-              height="100%"
-              ref={pdfRef}></iframe> */}
           </div>
         </section>
       </Suspense>
