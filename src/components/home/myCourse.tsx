@@ -12,7 +12,7 @@ const MyCourse = () => {
   return (
     <div className="space-y-2">
       <p className="text-[14px] text-textGrey">My coursework</p>
-      {myCourseDataArray.length == 0 ? (
+      {myCourseDataArray?.length == 0 ? (
         <section className="h-[10rem] w-full  flex justify-center items-center">
           <p className="text-xl font-semibold">There is no course work please Create</p>
         </section>

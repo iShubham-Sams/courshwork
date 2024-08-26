@@ -67,7 +67,7 @@ export default function Page({ params }: { params: { courseId: string } }) {
         setWrongId(true);
       }
     }
-  }, [params.courseId, setPdfFile, setWrongId, getValue, scoreCriteriaValueSet, setValue, toast]);
+  }, [params.courseId]);
   useEffect(() => {
     const dismissShowFullScreen = (event: KeyboardEvent) => {
       if (showFullScreen && (event.key === "Escape" || event.keyCode === 27)) {
