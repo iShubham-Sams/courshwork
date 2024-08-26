@@ -150,7 +150,7 @@ const PdfUploader = () => {
               <UploadFileIcon />
               <div className="text-textGrey flex flex-col items-center">
                 <p className="font-semibold">Drag and drop a PDF</p>
-                <p className="text-sm">"Limit 25 MB per file"</p>
+                <p className="text-sm">Limit 25 MB per file</p>
               </div>
               <Input accept=".pdf" ref={pdfInputRef} type="file" multiple={false} onChange={handleFileSelect} style={{ display: "none" }} id="fileInput" />
               <Button

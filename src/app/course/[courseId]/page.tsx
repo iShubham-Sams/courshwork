@@ -67,13 +67,13 @@ export default function Page({ params }: { params: { courseId: string } }) {
         setWrongId(true);
       }
     }
-  }, [params.courseId, setPdfFile, setWrongId]);
-  const dismissShowFullScreen = (event: KeyboardEvent) => {
-    if (showFullScreen && (event.key === "Escape" || event.keyCode === 27)) {
-      setShowFullScreen(false);
-    }
-  };
+  }, [params.courseId, setPdfFile, setWrongId, getValue, scoreCriteriaValueSet, setValue, toast]);
   useEffect(() => {
+    const dismissShowFullScreen = (event: KeyboardEvent) => {
+      if (showFullScreen && (event.key === "Escape" || event.keyCode === 27)) {
+        setShowFullScreen(false);
+      }
+    };
     window.addEventListener("keydown", dismissShowFullScreen);
     return () => window.removeEventListener("keydown", dismissShowFullScreen);
   }, [showFullScreen]);

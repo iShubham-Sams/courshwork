@@ -16,33 +16,33 @@ const useMyCourse = () => {
   const [myCourseDataArray, setMyCourseDataArray] = useState<Course[] | null>(null)
   const { getValue } = useLocalStorage();
 
-  const getCourse = async () => {
-    const localStoragePdfData = (await getValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work")) as LocalStoragePdfData[] | [];
-    if (localStoragePdfData.length > 0) {
-      const data = localStoragePdfData.map(async (val) => {
-        const data = await getItem(val.id);
-        if (data) {
-          const blob = new Blob([data.file], { type: "application/pdf" });
-          const pdfUrl = URL.createObjectURL(blob);
-          return { ...val, pdfUrl, isDeletable: true };
-        } else {
-          return { ...val, pdfUrl: null, isDeletable: true };
-        }
-      });
-      data.map(async (val) => {
-        const da = await val;
-        setMyCourseDataArray((d) => [...(d || []), da]);
-      });
-    } else {
-      setMyCourseDataArray([])
-    }
-  };
   useEffect(() => {
+    const getCourse = async () => {
+      const localStoragePdfData = (await getValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work")) as LocalStoragePdfData[] | [];
+      if (localStoragePdfData.length > 0) {
+        const data = localStoragePdfData.map(async (val) => {
+          const data = await getItem(val.id);
+          if (data) {
+            const blob = new Blob([data.file], { type: "application/pdf" });
+            const pdfUrl = URL.createObjectURL(blob);
+            return { ...val, pdfUrl, isDeletable: true };
+          } else {
+            return { ...val, pdfUrl: null, isDeletable: true };
+          }
+        });
+        data.map(async (val) => {
+          const da = await val;
+          setMyCourseDataArray((d) => [...(d || []), da]);
+        });
+      } else {
+        setMyCourseDataArray([])
+      }
+    };
     if (!myCourseDataArray) {
       getCourse();
     }
     return () => setMyCourseDataArray(null);
-  }, []);
+  }, [myCourseDataArray]);
 
   return { myCourseDataArray, setMyCourseDataArray }
 }

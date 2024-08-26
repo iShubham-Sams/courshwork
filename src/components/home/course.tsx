@@ -13,7 +13,7 @@ type Course = {
   value: string;
   isDeletable?: boolean;
 };
-const Course = ({ data, setMyCourseDataArray, myCourseDataArray }: { data: Course; setMyCourseDataArray?: any; myCourseDataArray: Course[] }) => {
+const Course = ({ data, setMyCourseDataArray, myCourseDataArray }: { data: Course; setMyCourseDataArray?: any; myCourseDataArray?: Course[] }) => {
   const { getValue, setValue, deleteValue } = useLocalStorage();
   const deleteCourse = async () => {
     const localStoragePdfData = getValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work");
@@ -21,7 +21,7 @@ const Course = ({ data, setMyCourseDataArray, myCourseDataArray }: { data: Cours
     setValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work", filterData);
     await deleteItem(data.id);
     deleteValue(data.id.toString());
-    const updateState = myCourseDataArray.filter((val) => val.id !== data.id);
+    const updateState = myCourseDataArray?.filter((val) => val.id !== data.id);
     setMyCourseDataArray(updateState);
   };
   return (
