@@ -18,7 +18,7 @@ const useMyCourse = () => {
 
   const getCourse = async () => {
     const localStoragePdfData = (await getValue(process.env.NEXT_PUBLIC_COURSE_WORK ?? "course_work")) as LocalStoragePdfData[] | [];
-    if (localStoragePdfData.length > 0) {
+    if (localStoragePdfData && localStoragePdfData.length > 0) {
       const data = localStoragePdfData.map(async (val) => {
         const data = await getItem(val.id);
         if (data) {
